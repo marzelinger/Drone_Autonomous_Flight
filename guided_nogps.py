@@ -182,7 +182,7 @@ def to_quaternion(roll = 0.0, pitch = 0.0, yaw = 0.0):
     z = t1 * t2 * t4 - t0 * t3 * t5
 
     return [w, x, y, z]
-    
+
 #########################
 ####### MAIN CODE #######
 #########################
@@ -190,24 +190,24 @@ def to_quaternion(roll = 0.0, pitch = 0.0, yaw = 0.0):
 # Set up interrupt handler for keyboard interrupt
 signal.signal(signal.SIGINT, end_program)
 
-connection_string = 'com4'
+connection_string = '/dev/ttyACM0'
 baud_rate = 115200
 print "Connecting to vehicle on: %s" % connection_string
 # vehicle = connect(connection_string, wait_ready=True)
 vehicle = connect(connection_string, baud=baud_rate)
 
  # Create message listener using decorator
- @vehicle.on_message('*')
- def listener(self, name, message):
+@vehicle.on_message('*')
+def listener(self, name, message):
      if name == 'COMMAND_ACK':
          if message.result != 0:
              print "COMMAND FAILED!"
          print 'message command: %s' % message.command
          print 'message results: %s' % message.result
 
- show_info()
+show_info()
 
- pause_for_input()
+pause_for_input()
 
 # Take off 2.5m in GUIDED_NOGPS mode.
 arm_and_takeoff_nogps(2.5)
